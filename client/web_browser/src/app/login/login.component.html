@@ -1,0 +1,23 @@
+<form>
+    <h1> Sign In </h1>
+
+    <mat-form-field class="form-field" appearance="fill">
+        <mat-label for="email-form"> Email </mat-label>
+        <input matInput [(ngModel)]="email" name="email-form" type="email">
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="fill">
+        <mat-label for="password-form"> Password </mat-label>
+        <input matInput [(ngModel)]="password" name="password-form" type="password">
+    </mat-form-field>
+
+    <br>
+
+    <mat-card-actions class="form-field">
+        <button mat-raised-button type="submit" color="primary" class="submit-btn" (click)="submitLogin()"> Login <mat-icon>arrow_right_alt</mat-icon></button>
+    </mat-card-actions>
+
+    <div class="spacer"></div>
+    <a routerLink="/account/sign-up" class="form-link"> Sign up <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
+    <a routerLink="/account/forgot-password" class="form-link"> Forgot password? <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
+</form>

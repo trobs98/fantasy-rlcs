@@ -1,0 +1,46 @@
+<div class="app-container">
+  
+    <mat-toolbar color="primary">
+      <mat-toolbar-row class="toolbar-row">
+          <button mat-icon-button (click)="sidenav.toggle()">
+              <mat-icon class="toolbar-icon">menu</mat-icon>
+          </button>
+  
+          <div class="toolbar-spacer"></div>
+          
+          <h1 class="title"> Fantasy RLCS </h1>
+          <img src="../../assets/images/RLCS.png" class="logo">
+
+          <div class="toolbar-spacer"></div>
+
+          <h3 *ngIf="loggedIn">{{account}}</h3>
+          <h3 *ngIf="loggedIn"></h3>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container">
+    
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="sidenav">
+      <mat-nav-list *ngIf="loggedIn">
+        <a mat-list-item (click)="setRoute('/points')" routerLink="/points" routerLinkActive="active-route-item" class="list-item">Points</a>
+        <a mat-list-item (click)="setRoute('/pick-team')" routerLink="/pick-team" routerLinkActive="active-route-item" class="list-item">Pick Team</a>
+        <a mat-list-item (click)="setRoute('/transfers')" routerLink="/transfers" routerLinkActive="active-route-item" class="list-item">Transfers</a>
+        <a mat-list-item (click)="logout()" class="list-item">Sign Out</a>
+
+      </mat-nav-list>
+      <mat-nav-list *ngIf="!loggedIn">
+        <a mat-list-item (click)="setRoute('/login')" routerLink="/login" routerLinkActive="active-route-item" class="list-item">Home</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="sidenav-content">
+      <div class="content">
+        <login *ngIf="currentRoute === '/login' && !loggedIn"></login>
+        <points *ngIf="currentRoute === '/points' && loggedIn"></points>
+        <pick-team *ngIf="currentRoute === '/pick-team' && loggedIn"></pick-team>
+        <transfers *ngIf="currentRoute === '/transfers' && loggedIn"></transfers>
+      </div>
+    </mat-sidenav-content>
+    
+  </mat-sidenav-container>
+</div>

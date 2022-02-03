@@ -1,0 +1,61 @@
+.app-container {
+    height: 100%;
+}
+
+.header-container {
+    height: 10%;
+    width: 100%
+}
+
+.sidenav-container {
+    height: 90%;
+    background-color: grey;
+}
+
+.sidenav {
+    width: 10%;
+    background-color:yellow;
+}
+
+.sidenav-content {
+    width: auto;
+    background-color: white;
+}
+
+.content {
+    margin: 4%;
+}
+
+.toolbar-row {
+    height: 5%;
+}
+
+.toolbar-spacer {
+    flex: 1 1 auto
+}
+
+.logo {
+    width: 5%;
+    height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.title {
+    margin-right: 15px;
+    font-size: xx-large;
+}
+
+.toolbar-icon {
+    transform: scale(1.5);
+}
+
+.active-route-item {
+    background-color: lightyellow !important;
+    font-weight: bold;
+}
+
+.list-item {
+    background-color: white;
+    border: 1px lightgrey;
+}
