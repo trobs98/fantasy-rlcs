@@ -1,0 +1,31 @@
+
+<form>
+
+    <h1>First Name</h1>
+    <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput [formControl]="firstname">
+    </mat-form-field>
+
+    <h1>Last Name</h1>
+    <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput [formControl]="lastname">
+    </mat-form-field>
+
+    <h1>Email</h1>
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput [formControl]="email" type="email">
+    </mat-form-field>
+
+    <h1>Password</h1>
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [formControl]="password" type="password">
+    </mat-form-field>
+
+    <br>
+
+    <button mat-raised-button type="submit" color="primary" class="submit-btn" (click)="signUp()" [disabled]="firstname.invalid || lastname.invalid || email.invalid || password.invalid"> Sign Up <mat-icon>arrow_right_alt</mat-icon></button>
+</form>

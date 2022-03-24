@@ -1,6 +1,8 @@
-import { Component, ComponentFactoryResolver, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
-import { Router } from '@angular/router';
+import { RoutingService } from '../services/routing.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
   selector: 'login',
@@ -8,19 +10,48 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  email: String = '';
-  password: String = '';
+  email: string = '';
+  password: string = '';
 
   constructor(
       private AuthenticationService: AuthenticationService,
-      private Router: Router
+      private RoutingService: RoutingService,
+      private Dialog: MatDialog
     ) { }
 
   ngOnInit(): void { }
 
   submitLogin(): void {
-    this.AuthenticationService.setEmail(this.email);
-    this.AuthenticationService.setLoggedIn(true);
-    this.Router.navigateByUrl('/points');
+    this.AuthenticationService.attemptLogin(this.email, this.password).subscribe((data: any) => {
+      console.log('data.access: ', data.access);
+      if (data.access) {
+        this.AuthenticationService.setLoggedIn(true);
+        this.AuthenticationService.setEmail(this.email);
+        this.RoutingService.setDefaultLoggedInRoute();
+      }
+    }, (error: any) => {
+      console.log('error: ', error);
+      this.displayLoginErrorDialog();
+    });
+  }
+
+  displayLoginErrorDialog(): void {
+    const dialog = this.Dialog.open(ErrorDialogComponent, {
+      data: { message: 'There was an error with the email or password. If you have forgotten your login credentials please continue with \'Forgot Password?\'', header: 'ERROR LOGGING IN!'}
+    });
+
+    dialog.afterClosed().subscribe(result => {
+      console.log('closed dialog');
+    });
+  }
+
+  goToSignUp(): void {
+    console.log('signup');
+    this.RoutingService.setRoute('/signup');
+  }
+
+  forgotPassword(): void {
+    console.log('forgot password: ');
+    this.RoutingService.setRoute('/forgot-password');
   }
 }
