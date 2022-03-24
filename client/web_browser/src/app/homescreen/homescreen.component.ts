@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { RoutingService } from '../services/routing.service';
 
 @Component({
   selector: 'homescreen',
@@ -9,69 +8,37 @@ import { Location } from '@angular/common';
   styleUrls: ['./homescreen.component.css']
 })
 export class HomescreenComponent implements OnInit {
-
-  LoggedInPaths: Array<String> = ['/points', '/pick-team', '/transfers'];
-  NotLoggedInPaths: Array<String> = ['/login'];
-
-  account: String = '';
+  account: String;
   loggedIn: Boolean;
+  showSidenav: Boolean = true;
 
   opened = true;
   currentRoute: String;
 
   constructor(
       private AuthenticationService: AuthenticationService,
-      private Router: Router,
-      private Location: Location
+      private RoutingService: RoutingService
     ) {
       this.loggedIn = this.AuthenticationService.getLoggedIn();
-
-      let currentPath = this.Location.path();
-
-      if (!this.loggedIn) {
-        if (this.NotLoggedInPaths.indexOf(currentPath) > -1) {
-          this.currentRoute = this.Location.path();
-          this.Router.navigateByUrl(this.Location.path());
-        }
-        else {
-          this.currentRoute = '/login';
-          this.Router.navigateByUrl('/login');
-        }
-      }
-      else {
-        if (this.LoggedInPaths.indexOf(currentPath) > -1) {
-          this.currentRoute = this.Location.path();
-          this.Router.navigateByUrl(this.Location.path());
-        }
-        else {
-          this.currentRoute = '/points';
-          this.Router.navigateByUrl('/points');
-        }
-      }
+      this.currentRoute = this.RoutingService.getCurrentRoute();
+      this.account = this.AuthenticationService.getEmail();
     }
 
   ngOnInit(): void {
-    this.account = this.AuthenticationService.getEmail();
-    
     this.AuthenticationService.loggedInObserver.subscribe(loggedIn => {
       this.loggedIn = loggedIn;
-      
-      if (loggedIn) {
-        this.currentRoute = this.Location.path();
-        this.Router.navigateByUrl(this.Location.path());
-      }
-      else {
-        this.currentRoute = '/login';
-        this.Router.navigateByUrl('/login');
-      }
+    });
+
+    this.RoutingService.routeObserver.subscribe(route => {
+      this.currentRoute = route;
     });
   }
 
-  setRoute(route: String): void {
-    this.currentRoute = route;
+  setRoute(route: string): void {
+    this.RoutingService.setRoute(route);
   }
 
   logout(): void {
-    this.AuthenticationService.setLoggedIn(false);
+    this.AuthenticationService.logout();
   }
 }

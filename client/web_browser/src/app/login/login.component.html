@@ -18,6 +18,6 @@
     </mat-card-actions>
 
     <div class="spacer"></div>
-    <a routerLink="/account/sign-up" class="form-link"> Sign up <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
-    <a routerLink="/account/forgot-password" class="form-link"> Forgot password? <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
+    <a (click)="goToSignUp()" routerLink="/signup" class="form-link"> Sign up <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
+    <a (click)="forgotPassword()" routerLink="/forgot-password" class="form-link"> Forgot password? <mat-icon class="link-icon">arrow_right_alt</mat-icon></a>
 </form>

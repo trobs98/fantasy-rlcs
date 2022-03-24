@@ -1,20 +1,30 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, throwError, Subject } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+const ACCESS_TOKEN_COOKIE_DATA = {
+  'name': 'access_token',
+  'path': '/',
+  'domain': 'localhost',
+  'secure': true
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   private loggedIn: Boolean;
-  private email: String;
+  private email: string;
 
-  loggedInObserver: Subject<Boolean> = new Subject<Boolean>();;
+  loggedInObserver: Subject<Boolean> = new Subject<Boolean>();
 
   constructor(
       private Router: Router,
       private CookieService: CookieService,
+      private HttpClient: HttpClient,
       @Optional() @SkipSelf() sharedService?: AuthenticationService
   ) 
   {
@@ -23,36 +33,59 @@ export class AuthenticationService {
     }
     console.log('AuthenticationService Created.');
 
-    this.loggedIn = this.getCookieLoggedIn();
+    this.loggedIn = this.getCookieLoggedIn() ? true : false;
     this.email = '';
     
     this.loggedInObserver.subscribe(value => {
-      this.loggedIn = value
-      this.setCookieLoggedIn(value);
+      this.loggedIn = value;
     });
   }
 
-  private setCookieLoggedIn(loggedIn: Boolean): void {
-    this.CookieService.set('loggedIn', String(loggedIn), { expires: 1});
-  }
-
-  private getCookieLoggedIn(): Boolean {
-    return this.CookieService.get('loggedIn') && this.CookieService.get('loggedIn').toLowerCase() === 'true' ? true : false;
+  getCookieLoggedIn(): string {
+    return this.CookieService.get('access_token');
   }
 
   setLoggedIn(loggedIn: Boolean): void {
     this.loggedInObserver.next(loggedIn);
   }
 
+  attemptLogin(email: string, password: string) {
+    let body = new HttpParams()
+      .set('email', email)
+      .set('password', password);
+
+    return this.HttpClient.post('http://localhost:3000/login', body, {responseType: 'json', withCredentials: true});
+  }
+
+  attemptSignUp(email: string, password: string, firstname: string, lastname: string) {
+    console.log('email: ',email);
+    console.log('password: ',password);
+    console.log('firstname: ',firstname);
+    console.log('lastname: ',lastname);
+    let body = new HttpParams()
+      .set('email', email)
+      .set('password', password)
+      .set('firstname', firstname)
+      .set('lastname', lastname);
+
+    return this.HttpClient.post('http://localhost:3000/signup', body, {responseType: 'json', withCredentials: true});
+  }
+
   getLoggedIn(): Boolean {
     return this.loggedIn;
   }
 
-  setEmail(email: String): void {
+  logout(): void {
+    this.setLoggedIn(false);
+    this.setEmail('');
+    this.CookieService.delete(ACCESS_TOKEN_COOKIE_DATA.name, ACCESS_TOKEN_COOKIE_DATA.path);
+  }
+
+  setEmail(email: string): void {
     this.email = email;
   }
 
-  getEmail(): String {
+  getEmail(): string {
     return this.email;
   }
 }

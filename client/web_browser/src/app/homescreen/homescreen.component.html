@@ -2,23 +2,24 @@
   
     <mat-toolbar color="primary">
       <mat-toolbar-row class="toolbar-row">
-          <button mat-icon-button (click)="sidenav.toggle()">
-              <mat-icon class="toolbar-icon">menu</mat-icon>
-          </button>
-  
-          <div class="toolbar-spacer"></div>
-          
-          <h1 class="title"> Fantasy RLCS </h1>
-          <img src="../../assets/images/RLCS.png" class="logo">
+                  
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon class="toolbar-icon">menu</mat-icon>
+        </button>
 
-          <div class="toolbar-spacer"></div>
+        <div class="toolbar-spacer"></div>
+        
+        <h1 class="title"> Fantasy RLCS </h1>
+        <img src="../../assets/images/RLCS.png" class="logo">
 
-          <h3 *ngIf="loggedIn">{{account}}</h3>
-          <h3 *ngIf="loggedIn"></h3>
+        <div class="toolbar-spacer"></div>
+
+        <h3 *ngIf="loggedIn">{{account}}</h3>
+        <h3 *ngIf="loggedIn"></h3>
       </mat-toolbar-row>
     </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav-container class="display-container">
     
     <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="sidenav">
       <mat-nav-list *ngIf="loggedIn">
@@ -29,13 +30,16 @@
 
       </mat-nav-list>
       <mat-nav-list *ngIf="!loggedIn">
-        <a mat-list-item (click)="setRoute('/login')" routerLink="/login" routerLinkActive="active-route-item" class="list-item">Home</a>
+        <a mat-list-item (click)="setRoute('/login')" routerLink="/login" routerLinkActive="active-route-item" class="list-item">Login</a>
+        <!-- <a mat-list-item (click)="setRoute('/signup')" routerLink="/signup" routerLinkActive="active-route-item" class="list-item">Sign Up</a> -->
       </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content class="sidenav-content">
       <div class="content">
         <login *ngIf="currentRoute === '/login' && !loggedIn"></login>
+        <signup *ngIf="currentRoute === '/signup' && !loggedIn"></signup>
+        <forgot-password *ngIf="currentRoute === '/forgot-password' && !loggedIn"></forgot-password>
         <points *ngIf="currentRoute === '/points' && loggedIn"></points>
         <pick-team *ngIf="currentRoute === '/pick-team' && loggedIn"></pick-team>
         <transfers *ngIf="currentRoute === '/transfers' && loggedIn"></transfers>
