@@ -1,0 +1,13 @@
+.team-img {
+    width: 5vw;
+    height: 10vh;
+}
+
+table {
+    width: 40vw !important;
+    margin: auto;
+}
+
+th, td, tr {
+    /* padding: 10px !important; */
+}

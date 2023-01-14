@@ -1,9 +1,15 @@
+import { Team } from "./team";
+
 export class Player {
+    id: string;
     name: string;
     playerName: string;
+    team: Team;
 
-    constructor(name: string, playerName: string) {
+    constructor(id: string, name: string, playerName: string, team: Team) {
+        this.id = id;
         this.name = name;
         this.playerName = playerName;
+        this.team = team;
     }
 }

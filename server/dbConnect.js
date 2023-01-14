@@ -1,10 +1,11 @@
 var mysql = require("mysql");
 
-let pool;
+let authPool;
+let fantasyPool;
 
-let openDbConnectionPool = () => {
-    if (!pool) {
-        pool = mysql.createPool({
+let openAuthDbConnectionPool = () => {
+    if (!authPool) {
+        authPool = mysql.createPool({
             connectionLimit: 10,
             host: 'localhost',
             user: 'root',
@@ -15,13 +16,26 @@ let openDbConnectionPool = () => {
     }
 };
 
-let callDbQuery = (query) => {
+let openFantasyDbConnectionPool = () => {
+    if (!fantasyPool) {
+        fantasyPool = mysql.createPool({
+            connectionLimit: 10,
+            host: 'localhost',
+            user: 'root',
+            password: '***REMOVED***',
+            database: 'rl_fantasy'
+        });
+        return;
+    }
+};
+
+let callAuthDbQuery = (query) => {
     return new Promise((resolve, reject) => {
-        if (!pool) {
+        if (!authPool) {
             return console.error('No database connection.');
         }
         
-        pool.getConnection((err, connection) => {
+        authPool.getConnection((err, connection) => {
             if (err) {
                 return err;
             }
@@ -40,16 +54,52 @@ let callDbQuery = (query) => {
     });
 }
 
-let closeDbConnectionPool = () => {
-    if (!pool) {
+let callFantasyDbQuery = (query) => {
+    return new Promise((resolve, reject) => {
+        if (!fantasyPool) {
+            return console.error('No database connection.');
+        }
+        
+        fantasyPool.getConnection((err, connection) => {
+            if (err) {
+                return err;
+            }
+    
+            if (connection) {
+                connection.query(query, (err, result, fields) => {
+                    if (err) {
+                        return reject("db", `${err.message}`);
+                    }
+                    resolve({'result': result, 'error': err, 'fields': fields});
+                });
+
+                connection.release();
+            }
+        });
+    });
+}
+
+let closeAuthDbConnectionPool = () => {
+    if (!authPool) {
         return console.error('No database connection.');
     }
     
-    pool.end();
+    authPool.end();
+}
+
+let closeFantasyDbConnectionPool = () => {
+    if (!fantasyPool) {
+        return console.error('No database connection.');
+    }
+    
+    fantasyPool.end();
 }
 
 module.exports = {
-    openDbConnectionPool: openDbConnectionPool,
-    callDbQuery: callDbQuery,
-    closeDbConnectionPool: closeDbConnectionPool
+    openAuthDbConnectionPool: openAuthDbConnectionPool,
+    openFantasyDbConnectionPool: openFantasyDbConnectionPool,
+    callAuthDbQuery: callAuthDbQuery,
+    callFantasyDbQuery: callFantasyDbQuery,
+    closeAuthDbConnectionPool: closeAuthDbConnectionPool,
+    closeFantasyDbConnectionPool: closeFantasyDbConnectionPool
 }

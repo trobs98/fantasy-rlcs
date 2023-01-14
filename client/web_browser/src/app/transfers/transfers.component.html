@@ -1,1 +1,38 @@
-<p>transfers works!</p>
+<div class="field">
+    <div #defense class="field-row-1">
+        <div class="player" *ngFor="let defender of defenders; index as i;">
+            <img [src]="defender.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{defender.playerName}}</h1>
+        </div>
+        <div class="player">
+            <img [src]="EMPTY_PLAYER.logoUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{EMPTY_PLAYER.playerName}}</h1>
+        </div>
+    </div>
+
+    <br>
+
+    <div #midfield class="field-row-2">
+        <div class="player" *ngFor="let midfielder of midfields; index as i;">
+            <img [src]="midfielder.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{midfielder.playerName}}</h1>
+        </div>
+    </div>
+
+    <br>
+
+    <div #offense class="field-row-3">
+        <div class="player" *ngFor="let forward of forwards; index as i;">
+            <img [src]="forward.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{forward.playerName}}</h1>
+        </div>
+        <div class="player">
+            <img [src]="EMPTY_PLAYER.logoUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{EMPTY_PLAYER.playerName}}</h1>
+        </div>
+        <div class="player">
+            <img [src]="EMPTY_PLAYER.logoUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{EMPTY_PLAYER.playerName}}</h1>
+        </div>
+    </div>
+</div>
