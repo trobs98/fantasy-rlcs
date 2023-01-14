@@ -1,16 +1,17 @@
 const axios = require('axios').default;
 
-let Player = require('./models/player-model');
-let Team = require('./models/team-model');
 
-function getNaActiveTeamsData() {
-
+/*
+ *  @param  {string[]}  playerIds An array of Player IDs that correspond to the IDs from API 'zsr.octane.gg'
+ *  @return {Player[]}  returns a list of Player objects corresponding to 
+ */
+function getPlayersByIds(playersIds) {
     return new Promise((resolve, reject) => {
         axios.get('https://zsr.octane.gg/teams/active?region=NA', {})
         .then((data) => {
             try {
                 let teamsData = data.data.teams;
-                let teams = [];
+                let players = [];
 
                 for (let i = 0; i < teamsData.length; i++) {
                     let currentTeam = teamsData[i].team;
@@ -24,7 +25,7 @@ function getNaActiveTeamsData() {
         
                     for (let j = 0; j < teamsPlayers.length; j++) {
                         let playerData = teamsPlayers[j];
-                        let player = new Player(playerData._id, playerData.name, playerData.tag, new Team(id, [], name, region, imageUrl));
+                        let player = new Player(playerData._id, playerData.name, playerData.tag, id);
     
                         players.push(player);
                     }
@@ -39,14 +40,8 @@ function getNaActiveTeamsData() {
             }
         });
     });
-
-}
-
-function getMyFantasyTeamByEmail(email) {
-
 }
 
 module.exports = {
-    getNaActiveTeamsData: getNaActiveTeamsData,
-    getMyFantasyTeamByEmail: getMyFantasyTeamByEmail
+
 }

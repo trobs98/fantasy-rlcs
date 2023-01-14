@@ -34,7 +34,7 @@ export class AuthenticationService {
     console.log('AuthenticationService Created.');
 
     this.loggedIn = this.getCookieLoggedIn() ? true : false;
-    this.email = '';
+    this.email = this.getCookieLoggedIn() ? this.getCookieLoggedIn().split(":")[0] : '';
     
     this.loggedInObserver.subscribe(value => {
       this.loggedIn = value;
@@ -42,7 +42,7 @@ export class AuthenticationService {
   }
 
   getCookieLoggedIn(): string {
-    return this.CookieService.get('access_token');
+    return this.CookieService.get(ACCESS_TOKEN_COOKIE_DATA.name);
   }
 
   setLoggedIn(loggedIn: Boolean): void {

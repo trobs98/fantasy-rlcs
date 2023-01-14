@@ -1,6 +1,29 @@
-<div *ngFor="let team of activeNATeams; index as i;">
-    <h1>{{team.name}}</h1>
-    <img [src]="team.imageUrl" class="team-img">
-    <h5>{{team.region}}</h5>
+<div class="field">
+    <div #defense class="field-row-1">
+        <div class="player" *ngFor="let defender of defenders; index as i;">
+            <img [src]="defender.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{defender.playerName}}</h1>
+        </div>
+    </div>
 
+    <br>
+
+    <div #midfield class="field-row-2">
+        <div class="player" *ngFor="let midfielder of midfields; index as i;">
+            <img [src]="midfielder.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{midfielder.playerName}}</h1>
+        </div>
+    </div>
+
+    <br>
+
+    <div #offense class="field-row-3">
+        <div class="player" *ngFor="let forward of forwards; index as i;">
+            <img [src]="forward.team.imageUrl" class="team-img" (click)="addPlayerClick($event, 0, 0)">
+            <h1 class="player-label mat-display-1">{{forward.playerName}}</h1>
+        </div>
+    </div>
+</div>
+<div class="substitutes">
+    
 </div>

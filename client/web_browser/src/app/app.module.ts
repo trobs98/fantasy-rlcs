@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';  
 
 import { PointsComponent } from './points/points.component';
 import { PickTeamComponent } from './pick-team/pick-team.component';
@@ -28,7 +29,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { CookieService } from 'ngx-cookie-service';
 import { SignupComponent } from './signup/signup.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { ErrorDialogComponent } from './dialogs/error-dialog/error-dialog.component';
+import { AddPlayerToTeamComponent } from './dialogs/add-player-to-team/add-player-to-team.component';
+import { PickTeamPlayerOptionsComponent } from './dialogs/pick-team-player-options/pick-team-player-options.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     LoginComponent,
     SignupComponent,
     ForgotPasswordComponent,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    AddPlayerToTeamComponent,
+    PickTeamPlayerOptionsComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,8 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     ReactiveFormsModule,
     MatCardModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule
   ],
   providers: [
     AuthenticationService,
