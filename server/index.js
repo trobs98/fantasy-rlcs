@@ -1,11 +1,12 @@
 const express = require('express');
-const axios = require('axios').default;
 const bodyparser = require('body-parser');
 const cookieparser = require('cookie-parser');
 const cors = require('cors');
 const authentication = require('./authentication');
 const dbConnect = require('./dbConnect');
 const teams = require('./teams');
+const gameInfo = require('./gameInfo');
+const fantasyTeam = require('./fantasyTeam');
 
 const app = express();
 const port = 3000;
@@ -14,7 +15,8 @@ const statusCodes = {
     'unauth': {code: 401, message: 'Unauthorized'}
 }
 
-dbConnect.openDbConnectionPool();
+dbConnect.openAuthDbConnectionPool();
+dbConnect.openFantasyDbConnectionPool();
 
 app.use(cors({'credentials': true, 'origin': 'http://localhost:4200', 'allowedHeaders': 'application/json, text/plain'}));
 //app.use(cors());
@@ -27,6 +29,19 @@ app.get('/', (req, res) => {
 
 app.get('/players', (req, res) => {
 
+});
+
+app.get('/fantasy-team', (req, res) => {
+    if (req.query && req.query.email) {
+        let email = req.query.email;
+
+        fantasyTeam.getFantasyTeamByEmail(email).then((result) => {
+            return res.send(result);
+        });
+    }
+    else {
+        return res.send();
+    }
 });
 
 app.get('/active-na-teams', (req, res) => {
@@ -61,13 +76,10 @@ app.post('/login', (req, res) => {
         return res.send('Status Code ' + res.statusCode + ': ' + res.statusMessage + ' - There is an issue with the sign up data.');
     }
     else {
-        console.log('email: ', email);
-        console.log('password: ', password);
-
         authentication.loginByEmail(email, password).then(resolveResult, rejectResult);
 
         function resolveResult(result) {
-            res.cookie('access_token', result.access_token, {httpOnly: false, secure: false, expires: new Date(Date.now() + authentication.ACCESS_TOKEN_EXPIRY_LENGTH * 1000)});
+            res.cookie('access_token', email + ":" + result.access_token, {encode: String, httpOnly: false, secure: false, expires: new Date(Date.now() + authentication.ACCESS_TOKEN_EXPIRY_LENGTH * 1000)});
             return res.send({
                 'access': result.access,
                 'email': email
@@ -129,6 +141,19 @@ app.post('/signup', (req, res) => {
         authentication.signUp(email, password, firstname, lastname).then(resolveResult, rejectResult);
     }
 });
+
+app.get('/getPlayerStats', (req, res) => {
+    gameInfo.getPlayerStatsByGameId(1, 1).then(resolveResult, rejectResult)
+
+    function resolveResult(result) {
+        return res.send(result);
+    }
+
+    function rejectResult(error) {
+        res.statusCode = 406;
+        return res.send(error.message);
+    }
+})
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

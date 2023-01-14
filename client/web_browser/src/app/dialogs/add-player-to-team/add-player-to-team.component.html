@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>{{header}}</h1>
+
+<mat-dialog-content>
+    <table mat-table [dataSource]="players">
+
+        <ng-container matColumnDef="addPlayer">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button (click)="addPlayer(element)" class="btn" color="primary"> Add <mat-icon>add</mat-icon> </button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="decal">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element"> <img [src]="element.team.imageUrl ? element.team.imageUrl : '/assets/images/rl-logo.png'" class="team-img" alt="{{element.team.name}}"> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="teamName">
+            <th mat-header-cell *matHeaderCellDef>Team</th>
+            <td mat-cell *matCellDef="let element"> {{element.team.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="playerName">
+            <th mat-header-cell *matHeaderCellDef>Player</th>
+            <td mat-cell *matCellDef="let element"> {{element.playerName}} </td>
+        </ng-container>
+
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- <div *ngFor="let team of activeNATeams; index as i;">
+        <h1>{{team.name}}</h1>
+        <img [src]="team.imageUrl" class="team-img">
+        <h5>{{team.region}}</h5>
+        <ul *ngFor="let player of team.players; index as j;">
+            <li>{{player.name}}</li>
+            <li>{{player.playerName}}</li>
+        </ul>
+    
+    </div> -->
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

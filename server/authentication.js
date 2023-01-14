@@ -94,7 +94,7 @@ function validatePassword(password, hash_password, salt) {
 
 function saveUser(id, email, hash_password, salt, firstname, lastname) {
     return new Promise((resolve, reject) => {
-        dbConnect.callDbQuery('INSERT INTO User(id, email, hash_password, salt, first_name, last_name) VALUES ('
+        dbConnect.callAuthDbQuery('INSERT INTO User(id, email, hash_password, salt, first_name, last_name) VALUES ('
                                 + id + ',"' + email + '","' + hash_password + '","' + salt + '","' + firstname + '","' + lastname + '") ON DUPLICATE KEY UPDATE ' + 
                                 'email="' + email + '", hash_password="' + hash_password + '", salt="' + salt + '", first_name="' + firstname + '", last_name="' + lastname + '";').then(
         result => {
@@ -107,7 +107,7 @@ function saveUser(id, email, hash_password, salt, firstname, lastname) {
 
 function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
-        dbConnect.callDbQuery('SELECT * FROM User WHERE email="' + email + '";').then(
+        dbConnect.callAuthDbQuery('SELECT * FROM User WHERE email="' + email + '";').then(
         
         result => {
             return resolve(result);
@@ -120,7 +120,7 @@ function getUserByEmail(email) {
 
 function saveUserAccessToken(email, accessToken) {
     return new Promise((resolve, reject) => {
-        dbConnect.callDbQuery('UPDATE User SET access_token="' + accessToken + '" WHERE email="' + email + '";').then(
+        dbConnect.callAuthDbQuery('UPDATE User SET access_token="' + accessToken + '" WHERE email="' + email + '";').then(
             
         result => {
             return resolve(result);
