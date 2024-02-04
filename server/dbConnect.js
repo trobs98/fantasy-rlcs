@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var config = require("./config");
 
 let authPool;
 let fantasyPool;
@@ -7,10 +8,10 @@ let openAuthDbConnectionPool = () => {
     if (!authPool) {
         authPool = mysql.createPool({
             connectionLimit: 10,
-            host: 'localhost',
-            user: 'root',
-            password: '***REMOVED***',
-            database: 'rl_fantasy_admin'
+            host: config.auth_database.host,
+            user: config.auth_database.user,
+            password: config.auth_database.password,
+            database: config.auth_database.database
         });
         return;
     }
@@ -20,10 +21,10 @@ let openFantasyDbConnectionPool = () => {
     if (!fantasyPool) {
         fantasyPool = mysql.createPool({
             connectionLimit: 10,
-            host: 'localhost',
-            user: 'root',
-            password: '***REMOVED***',
-            database: 'rl_fantasy'
+            host: config.fantasy_database.host,
+            user: config.fantasy_database.user,
+            password: config.fantasy_database.password,
+            database: config.fantasy_database.database
         });
         return;
     }
